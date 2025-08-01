@@ -4,6 +4,7 @@ import { authMiddleware } from '../../../utils/auth';
 
 async function handler(req, res) {
   await dbConnect();
+
   const { id } = req.query;
 
   if (req.method === 'GET') {
@@ -11,10 +12,12 @@ async function handler(req, res) {
     if (!product) return res.status(404).json({ message: 'Product not found' });
     return res.status(200).json(product);
   }
+
   else if (req.method === 'PUT') {
     if (!req.user.isAdmin) {
       return res.status(403).json({ message: 'Admin resource. Access denied.' });
     }
+
     const { name, description, price, image, countInStock } = req.body;
 
     const product = await Product.findById(id);
@@ -29,19 +32,22 @@ async function handler(req, res) {
     await product.save();
     return res.status(200).json(product);
   }
+
   else if (req.method === 'DELETE') {
     if (!req.user.isAdmin) {
       return res.status(403).json({ message: 'Admin resource. Access denied.' });
     }
+
     const product = await Product.findById(id);
     if (!product) return res.status(404).json({ message: 'Product not found' });
 
     await product.remove();
     return res.status(204).end();
   }
+
   else {
     res.setHeader('Allow', ['GET', 'PUT', 'DELETE']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
 

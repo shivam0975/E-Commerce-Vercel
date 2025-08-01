@@ -23,6 +23,7 @@ export default function Admin() {
   const token = user?.token || '';
 
   useEffect(() => {
+    if (user === undefined) return;
     if (!user || !user.isAdmin) {
       router.push('/');
     } else {

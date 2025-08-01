@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -17,10 +17,18 @@ export default function Checkout() {
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const token = user?.token || '';
 
-  if (!user) {
-    router.push('/login');
+  useEffect(() => {
+    setMounted(true);
+
+    if (!user) {
+      router.push('/login');
+    }
+  }, [user, router]);
+
+  if (!mounted) {
     return null;
   }
 
@@ -126,7 +134,7 @@ export default function Checkout() {
             disabled={loading}
             className="bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
           >
-            Place Order
+            {loading ? 'Placing Order...' : 'Place Order'}
           </button>
         </form>
       </main>

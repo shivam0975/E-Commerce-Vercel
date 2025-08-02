@@ -1,4 +1,4 @@
-
+<embed src="E-Commerce.pdf" type="application/pdf" width="100%" height="600px" />
 # 🛒 E-Commerce Store (Next.js + MongoDB + Vercel)
 
 A modern full-stack e-commerce platform built using **Next.js**, **MongoDB**, **Tailwind CSS**, and deployed on **Vercel**. Features include user authentication, admin dashboard, cart management, and order handling.

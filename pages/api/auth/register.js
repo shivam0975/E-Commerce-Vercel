@@ -1,34 +1,32 @@
 import dbConnect from '../../../lib/db';
 import User from '../../../models/User';
-import bcrypt from 'bcryptjs';
-import { signToken } from '../../../lib/jwt';
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
-
-  await dbConnect();
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', ['POST']);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
 
   const { name, email, password } = req.body;
 
-  if (!name || !email || !password)
-    return res.status(400).json({ message: 'Name, email and password are required' });
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: 'All fields required' });
+  }
+
+  await dbConnect();
 
   const existingUser = await User.findOne({ email });
-  if (existingUser)
+  if (existingUser) {
     return res.status(409).json({ message: 'User already exists' });
+  }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  const user = await User.create({
+  const user = new User({
     name,
     email,
-    password: hashedPassword,
+    passwordHash: password, // will be hashed by pre-save hook
   });
 
-  const token = signToken({ _id: user._id, email: user.email, isAdmin: user.isAdmin });
+  await user.save();
 
-  res.status(201).json({
-    token,
-    user: { _id: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin }
-  });
+  res.status(201).json({ message: 'User created' });
 }

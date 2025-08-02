@@ -1,35 +1,39 @@
 import dbConnect from '../../../lib/db';
 import User from '../../../models/User';
+import bcrypt from 'bcryptjs';
 import { signToken } from '../../../lib/jwt';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    res.setHeader('Allow', ['POST']);
-    return res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
-
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Email and password required' });
+    return res.status(405).json({ message: 'Method not allowed' });
   }
 
   await dbConnect();
 
+  let { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required' });
+  }
+
+  email = email.toLowerCase();
+
   const user = await User.findOne({ email });
-  if (!user || !(await user.matchPassword(password))) {
+
+  if (!user) {
     return res.status(401).json({ message: 'Invalid email or password' });
   }
 
-  const token = signToken(user);
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    return res.status(401).json({ message: 'Invalid email or password' });
+  }
+
+  const token = signToken({ _id: user._id, email: user.email, isAdmin: user.isAdmin });
 
   res.status(200).json({
     token,
-    user: {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    },
+    user: { _id: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin },
   });
 }

@@ -1,5 +1,16 @@
 # Project Presentation
 
+# Presentation
+
+<details>
+  <summary>Click to view embedded PDF</summary>
+
+  <embed src="E-Commerce.pdf" type="application/pdf" width="100%" height="600px" />
+
+</details>
+
+[Download PDF](E-Commerce.pdf)
+
 <embed src="E-Commerce.pdf" type="application/pdf" width="100%" height="600px" />
 
 > If the PDF does not load, [click here to download it](E-Commerce.pdf).

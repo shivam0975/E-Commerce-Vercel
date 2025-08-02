@@ -1,13 +1,9 @@
 # Project Presentation
 
-<details>
-  <summary>Click to view embedded PDF</summary>
+[📄 View Presentation on Google Drive]([https://drive.google.com/your-shared-link](https://drive.google.com/file/d/1Bmv09PpOXGQbL_cgZMPwtah8phLh5X4J/view?usp=share_link))
 
-  <embed src="E-Commerce.pdf" type="application/pdf" width="100%" height="600px" />
+Or download directly: [presentation.pdf](E-Commerce.pdf)
 
-</details>
-
-> If the PDF does not load, [click here to download it](E-Commerce.pdf).
 
 
 

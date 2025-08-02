@@ -66,17 +66,6 @@ ecommerce-store/
 
 ---
 
-## 🌐 Deployment (Vercel)
-
-- Push your code to GitHub.
-- Import the project into [Vercel](https://vercel.com).
-- Add the required Environment Variables:
-  - `MONGODB_URI`
-  - `JWT_SECRET`
-- Deploy and go live 🚀
-
----
-
 ## 📜 License
 
 MIT License © 2025 Shivam Tripathi

@@ -55,7 +55,7 @@ export default function Admin() {
       });
       if (!res.ok) throw new Error('Failed to load orders');
       const data = await res.json();
-      setOrders(data);
+      setOrders(data.orders);
     } catch (err) {
       setError(err.message);
     }

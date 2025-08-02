@@ -20,13 +20,11 @@ export default function Admin() {
     countInStock: ''
   });
 
-  // Only assign token if user and token exist
   const token = user?.token || '';
 
   useEffect(() => {
-    if (user === undefined) return; // auth loading, wait
-
-    if (!user || !user.isAdmin || !token) {
+    if (user === undefined) return;
+    if (!user || !user.isAdmin) {
       router.push('/');
     } else {
       fetchProducts();
@@ -36,16 +34,11 @@ export default function Admin() {
 
   async function fetchProducts() {
     setLoadingProducts(true);
-    setError('');
     try {
-      if (!token) throw new Error('No auth token available');
       const res = await fetch('/api/products', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || 'Failed to load products');
-      }
+      if (!res.ok) throw new Error('Failed to load products');
       const data = await res.json();
       setProducts(data);
     } catch (err) {
@@ -56,16 +49,11 @@ export default function Admin() {
 
   async function fetchOrders() {
     setLoadingOrders(true);
-    setError('');
     try {
-      if (!token) throw new Error('No auth token available');
       const res = await fetch('/api/orders', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || 'Failed to load orders');
-      }
+      if (!res.ok) throw new Error('Failed to load orders');
       const data = await res.json();
       setOrders(data);
     } catch (err) {
@@ -86,7 +74,6 @@ export default function Admin() {
     }
 
     try {
-      if (!token) throw new Error('No auth token available');
       const res = await fetch('/api/products', {
         method: 'POST',
         headers: {
@@ -102,8 +89,7 @@ export default function Admin() {
         })
       });
       if (!res.ok) {
-        let data;
-        try { data = await res.json(); } catch { data = {}; }
+        const data = await res.json();
         throw new Error(data.message || 'Failed to create product');
       }
       setNewProduct({ name: '', description: '', price: '', image: '', countInStock: '' });
@@ -115,17 +101,13 @@ export default function Admin() {
 
   async function deleteProduct(id) {
     try {
-      if (!token) throw new Error('No auth token available');
       const res = await fetch(`/api/products/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || 'Failed to delete product');
-      }
+      if (!res.ok) throw new Error('Failed to delete product');
       fetchProducts();
     } catch (err) {
       setError(err.message);
@@ -134,7 +116,6 @@ export default function Admin() {
 
   async function markOrderPaid(id) {
     try {
-      if (!token) throw new Error('No auth token available');
       const res = await fetch(`/api/orders/${id}`, {
         method: 'PUT',
         headers: {
@@ -143,10 +124,7 @@ export default function Admin() {
         },
         body: JSON.stringify({ action: 'markPaid' })
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || 'Failed to mark paid');
-      }
+      if (!res.ok) throw new Error('Failed to mark paid');
       fetchOrders();
     } catch (err) {
       setError(err.message);
@@ -155,7 +133,6 @@ export default function Admin() {
 
   async function markOrderDelivered(id) {
     try {
-      if (!token) throw new Error('No auth token available');
       const res = await fetch(`/api/orders/${id}`, {
         method: 'PUT',
         headers: {
@@ -164,10 +141,7 @@ export default function Admin() {
         },
         body: JSON.stringify({ action: 'markDelivered' })
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || 'Failed to mark delivered');
-      }
+      if (!res.ok) throw new Error('Failed to mark delivered');
       fetchOrders();
     } catch (err) {
       setError(err.message);

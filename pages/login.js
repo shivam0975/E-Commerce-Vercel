@@ -19,12 +19,14 @@ export default function Login() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
+
     const data = await res.json();
 
     if (!res.ok) {
       setError(data.message || 'Something went wrong');
     } else {
-      login(data.user);
+      // Pass entire user object including token to login
+      login({ ...data.user, token: data.token });
       router.push('/');
     }
   }

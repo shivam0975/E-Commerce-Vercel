@@ -101,11 +101,14 @@ export default function Admin() {
 
   async function deleteProduct(id) {
   try {
+    if (!id) throw new Error('Product ID is required');
+    if (!token) throw new Error('Unauthorized. No token provided.');
+
     const res = await fetch(`/api/products/${id}`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json', // optional, but useful
-        Authorization: `Bearer ${token}`    // make sure `token` is defined
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       }
     });
 
@@ -114,12 +117,13 @@ export default function Admin() {
       throw new Error(errorData.message || 'Failed to delete product');
     }
 
-    await fetchProducts(); // ensure this is an `async` function
+    await fetchProducts(); // Refresh the product list
   } catch (err) {
     console.error('Delete error:', err.message);
     setError(err.message);
   }
 }
+
 
 
   async function markOrderPaid(id) {

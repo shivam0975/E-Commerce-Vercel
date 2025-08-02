@@ -1,6 +1,6 @@
 # Project Presentation
 
-[📄 View Presentation on Google Drive](https://drive.google.com/your-shared-link](https://drive.google.com/file/d/1Bmv09PpOXGQbL_cgZMPwtah8phLh5X4J/view?usp=share_link)
+[📄 View Presentation on Google Drive](https://drive.google.com/file/d/1Bmv09PpOXGQbL_cgZMPwtah8phLh5X4J/view?usp=share_link)
 
 Or download directly: [presentation.pdf](E-Commerce.pdf)
 

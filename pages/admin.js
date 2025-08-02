@@ -100,19 +100,27 @@ export default function Admin() {
   }
 
   async function deleteProduct(id) {
-    try {
-      const res = await fetch(`/api/products/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      if (!res.ok) throw new Error('Failed to delete product');
-      fetchProducts();
-    } catch (err) {
-      setError(err.message);
+  try {
+    const res = await fetch(`/api/products/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json', // optional, but useful
+        Authorization: `Bearer ${token}`    // make sure `token` is defined
+      }
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || 'Failed to delete product');
     }
+
+    await fetchProducts(); // ensure this is an `async` function
+  } catch (err) {
+    console.error('Delete error:', err.message);
+    setError(err.message);
   }
+}
+
 
   async function markOrderPaid(id) {
     try {

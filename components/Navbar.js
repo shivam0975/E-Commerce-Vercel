@@ -9,7 +9,7 @@ export default function Navbar() {
   return (
     <nav className="bg-white shadow p-4 flex justify-between items-center">
       <Link href="/" className="text-xl font-bold text-indigo-600">
-        MERN Shop
+        Shivam's E-Shop
       </Link>
       <div className="flex items-center space-x-6">
         <Link href="/cart">
@@ -32,9 +32,11 @@ export default function Navbar() {
         </Link>
         {user ? (
           <>
-            <Link href="/admin" className="text-gray-700 hover:text-indigo-600">
-              Admin
-            </Link>
+            {user.isAdmin && (
+              <Link href="/admin" className="text-gray-700 hover:text-indigo-600">
+                Admin
+              </Link>
+            )}
             <button
               onClick={() => logout()}
               className="px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700"

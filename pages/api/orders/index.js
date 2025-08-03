@@ -15,7 +15,7 @@ async function handler(req, res) {
         .populate('user', 'name email')
         .sort({ createdAt: -1 });
 
-      return res.status(200).json({ orders });  // ✅ wrap in object
+      return res.status(200).json({ orders });
     } catch (err) {
       console.error('Error fetching orders:', err);
       return res.status(500).json({ message: 'Failed to fetch orders' });

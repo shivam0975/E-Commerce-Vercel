@@ -2,6 +2,7 @@ import useSWR from 'swr';
 import fetcher from '../utils/fetcher';
 import Link from 'next/link';
 import Navbar from '../components/Navbar';
+import Head from 'next/head';
 import { useCart } from '../context/CartContext';
 
 export default function Home() {

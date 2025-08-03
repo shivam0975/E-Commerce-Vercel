@@ -48,19 +48,33 @@ export default function Admin() {
   }
 
   async function fetchOrders() {
-    setLoadingOrders(true);
-    try {
-      const res = await fetch('/api/orders', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (!res.ok) throw new Error('Failed to load orders');
-      const data = await res.json();
-      setOrders(data.orders);
-    } catch (err) {
-      setError(err.message);
-    }
+  setLoadingOrders(true);
+  setError(''); // clear previous errors
+
+  if (!token) {
+    setError('User not authorized');
     setLoadingOrders(false);
+    return;
   }
+
+  try {
+    const res = await fetch('/api/orders', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || 'Failed to load orders');
+    }
+
+    const data = await res.json();
+    setOrders(data.orders);
+  } catch (err) {
+    setError(err.message);
+  }
+
+  setLoadingOrders(false);
+}
 
   async function createProduct(e) {
     e.preventDefault();
